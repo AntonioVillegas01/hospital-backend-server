@@ -2,20 +2,19 @@ require( 'dotenv' ).config()
 const express = require( 'express' )
 const { dbConnection } = require( './database/config' )
 
-const cors = require('cors')
+const cors = require( 'cors' )
+
 
 const app = express();
 dbConnection()
 
-app.use(cors())
+app.use( cors() )
+//Lectura y parseo del body
+app.use( express.json() )
 
-//Rutas
-app.get( '/', ( req, res ) => {
-    res.json( {
-        ok: true,
-        msg: 'Hola Mundo'
-    } )
-} )
+// Rutas
+app.use( '/api/usuarios', require( './routes/usuarios.routes.js' ) );
+app.use( '/api/login', require( './routes/auth.routes.js' ) );
 
 const port = process.env.PORT
 
