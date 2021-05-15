@@ -6,18 +6,34 @@ const { generarJWT } = require( "../helpers/jwt" );
 
 const getUsuarios = async( req, res ) => {
 
-    const usuarios = await Usuario.find( {}, 'nombre email role google' );
-    res.json( {
-        ok: true,
-        usuarios,
-        uid: req.uid
-    } )
+    const desde = Number( req.query.desde ) || 0;
+
+    try{
+        const [usuarios, total] = await Promise.all( [
+            Usuario
+                .find( {}, 'nombre email role google img' )
+                .skip( desde )
+                .limit( 5 ),
+            Usuario.countDocuments()
+        ] )
+
+        res.json( {
+            total,
+            ok: true,
+            usuarios,
+            uid: req.uid
+        } )
+    }catch( e ) {
+        console.log( e )
+        res.status( 500 ).json( {
+            ok: true,
+            msg: 'Error insesperado .. revisar logs'
+        } )
+    }
 }
 const crearUsuario = async( req, res = response ) => {
     const { email, password } = req.body
-
     try {
-
         const existeEmail = await Usuario.findOne( { email } )
         if( existeEmail ) {
             return res.status( 400 ).json( {
@@ -34,7 +50,7 @@ const crearUsuario = async( req, res = response ) => {
         await usuario.save();
 
         // Generar un token
-        const token = await generarJWT(usuario.id);
+        const token = await generarJWT( usuario.id );
 
         res.json( {
             ok: true,
@@ -105,7 +121,7 @@ const borrarUsuario = async( req, res = response ) => {
             } )
         }
 
-        await Usuario.findOneAndDelete(uid)
+        await Usuario.findOneAndDelete( uid )
 
         res.json( {
             ok: true,
