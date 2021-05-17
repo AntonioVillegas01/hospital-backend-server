@@ -8,6 +8,9 @@ const cors = require( 'cors' )
 const app = express();
 dbConnection()
 
+//Directorio Public
+app.use(express.static('public'))
+
 app.use( cors() )
 //Lectura y parseo del body
 app.use( express.json() )
