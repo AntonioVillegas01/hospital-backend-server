@@ -22,17 +22,23 @@ router.get( '/', getMedicos )
 router.post( '/',
     [
         validarJwt,
-        check('nombre', 'El nombre del medico es necesario').not().isEmpty(),
-        check('hospital', 'El nombre del medico es necesario').not().isEmpty(),
-        check('hospital', 'El hospital ID deve ser valido').isMongoId(),
+        check( 'nombre', 'El nombre del medico es necesario' ).not().isEmpty(),
+        check( 'hospital', 'El nombre del medico es necesario' ).not().isEmpty(),
+        check( 'hospital', 'El hospital ID debe ser valido' ).isMongoId(),
         validarCampos
     ],
     crearMedico )
 
-router.put( '/:id', [],
+router.put( '/:id', [
+        validarJwt,
+        check( 'nombre', 'El nombre del medico es necesario' ).not().isEmpty(),
+        check( 'hospital', 'El hospital ID debe ser valido' ).isMongoId(),
+        validarCampos
+    ],
     actualizarMedico )
 
 router.delete( '/:id',
+    validarJwt,
     borrarMedico, )
 
 

@@ -1,12 +1,11 @@
-
 const { response } = require( "express" );
-const Medico = require('../models/medico.model')
+const Medico = require( '../models/medico.model' )
 
-const getMedicos = async (req, res= response ) =>{
+const getMedicos = async( req, res = response ) => {
 
     const medicos = await Medico.find()
-        .populate('usuario', 'nombre img')
-        .populate('hospital', 'nombre img')
+        .populate( 'usuario', 'nombre img' )
+        .populate( 'hospital', 'nombre img' )
 
     try {
         res.json( {
@@ -24,17 +23,17 @@ const getMedicos = async (req, res= response ) =>{
 
 
 }
-const crearMedico = async (req, res= response ) =>{
+const crearMedico = async( req, res = response ) => {
 
     const uid = req.uid
     const hospital = req.hospital
-    const medico = new Medico({
+    const medico = new Medico( {
         usuario: uid,
         hospital,
         ...req.body
-    })
+    } )
 
-    try{
+    try {
 
         const medicoDB = await medico.save()
 
@@ -43,7 +42,7 @@ const crearMedico = async (req, res= response ) =>{
             medico: medicoDB
         } )
 
-    }catch( e ) {
+    } catch( e ) {
         return res.status( 500 ).json( {
             ok: false,
             msg: 'Hable con el administrador',
@@ -51,22 +50,74 @@ const crearMedico = async (req, res= response ) =>{
         } )
     }
 }
-const actualizarMedico = (req, res= response ) =>{
+const actualizarMedico = async ( req, res = response ) => {
 
-    return  res.json( {
-        ok: true,
-        msg:'actualizarMedico'
-    } )
+    const id = req.params.id
+    const uid = req.uid
+
+    try{
+
+        const medico = await Medico.findById(id)
+        if(!medico){
+            return res.status(404).json({
+                ok:false,
+                msg:'El medico no existe',
+                medicoId:id
+            })
+        }
+
+        const cambiosMedico = {
+            ...req.body,
+            usuario: uid
+        }
+
+        const medicoActualizado = await Medico.findByIdAndUpdate(id, cambiosMedico, {new:true, useFindAndModify:true})
+
+
+        res.json( {
+            ok: true,
+            msg: `El medico: ${medico.nombre} fue actualizado correctamente`,
+            medico:medicoActualizado
+        } )
+
+
+    }catch( e ) {
+        return res.status(500).json( {
+            ok: false,
+            msg: 'Error al actualizar el medico'
+        } )
+    }
 }
-const borrarMedico = (req, res= response ) =>{
+const borrarMedico = async ( req, res = response ) => {
 
-    return  res.json( {
-        ok: true,
-        msg:'borrarMedico'
-    } )
+    const id = req.params.id
+    try{
+
+        const medico = await Medico.findById(id)
+        if(!medico){
+            return res.status(404).json({
+                ok:false,
+                msg:'El medico no existe',
+                medicoId:id
+            })
+        }
+
+        await Medico.findByIdAndDelete(id, { useFindAndModify: true })
+        res.status(200).json( {
+            ok: true,
+            msg: `El medico: ${medico.nombre} fue borrado correctamente`,
+
+        } )
+
+    }catch( e ) {
+        return res.status(500).json( {
+            ok: false,
+            msg: 'Error al borrar el medico'
+        } )
+    }
 }
 
-module.exports ={
+module.exports = {
     getMedicos,
     crearMedico,
     actualizarMedico,
