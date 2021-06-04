@@ -1,7 +1,11 @@
 /*
 Ruta: /api/usuarios
 * */
-const { validarJwt } = require( "../middlewares/validar-jwt" );
+const {
+    validarJwt,
+    validarADMIN_ROLE,
+    validarADMIN_ROLE_O_MISMO_USUARIO
+} = require( "../middlewares/validar-jwt" );
 const { Router } = require( "express" );
 
 const { check } = require( 'express-validator' )
@@ -29,13 +33,17 @@ router.post( '/',
 
 router.put( '/:id', [
     validarJwt,
+    validarADMIN_ROLE_O_MISMO_USUARIO,
     check( 'nombre', 'El nombre es obligatorio' ).not().isEmpty(),
     check( 'email', 'El email es obligatorio' ).isEmail(),
     check( 'role', 'El role es obligatorio' ).not().isEmpty(),
     validarCampos
 ], actualizarUsuario )
 
-router.delete( '/:id', validarJwt, borrarUsuario )
+router.delete( '/:id', [
+    validarJwt,
+    validarADMIN_ROLE
+], borrarUsuario )
 
 
 module.exports = router
