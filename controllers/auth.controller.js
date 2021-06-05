@@ -42,7 +42,8 @@ const login = async( req, res = response ) => {
         console.log( e )
         res.status( 500 ).json( {
             ok: false,
-            msg: 'Error insesperado al Borrar usuarios.. revisar logs'
+            msg: 'Ocurrio un error.. ',
+            error: e
         } )
     }
 }
