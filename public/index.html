@@ -1,39 +1,43 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Demo Login </title>
-    <meta name="google-signin-client_id" content="189675231445-82mi4j5enmkh31h3egbfs4tvj8ebt9l7.apps.googleusercontent.com">
+  <meta charset="utf-8">
+  <title>AdminPro</title>
+    <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-signin-client_id" content="189675231445-82mi4j5enmkh31h3egbfs4tvj8ebt9l7.apps.googleusercontent.com">
+  <script src="https://apis.google.com/js/platform.js"></script>
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/images/favicon.png">
+  <link href="./assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="./assets/css/style.css" rel="stylesheet">
+  <link id="theme" rel="stylesheet">
+<link rel="stylesheet" href="styles.f983741fa9e9abd41612.css"></head>
+<body class="fix-header card-no-border fix-sidebar">
+<div class="preloader">
+  <div class="loader">
+    <div class="loader__figure"></div>
+    <p class="loader__label">Admin Pro</p>
+  </div>
+</div>
+<app-root></app-root>
 
-</head>
-<body>
-    <h1>Google Sing In</h1>
-    <div class="g-signin2" data-onsuccess="onSignIn"></div>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+<script src="./assets/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap tether Core JavaScript -->
+<script src="./assets/plugins/bootstrap/js/popper.min.js"></script>
+<script src="./assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+<!-- slimscrollbar scrollbar JavaScript -->
+<script src="./assets/js/perfect-scrollbar.jquery.min.js"></script>
+<!--Wave Effects -->
+<script src="./assets/js/waves.js"></script>
+<!--Menu sidebar -->
+<script src="./assets/js/sidebarmenu.js"></script>
+<!--stickey kit -->
+<script src="./assets/plugins/sticky-kit-master/dist/sticky-kit.min.js"></script>
+<script src="./assets/plugins/sparkline/jquery.sparkline.min.js"></script>
+<!--Custom JavaScript -->
+<script src="./assets/js/custom.js"></script>
 
-    <a href="#" onclick="signOut();">Sign out</a>
-    <script>
-        function onSignIn(googleUser) {
-            var profile = googleUser.getBasicProfile();
-            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-            console.log('Name: ' + profile.getName());
-            console.log('Image URL: ' + profile.getImageUrl());
-            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 
-            var id_token = googleUser.getAuthResponse().id_token;
-            console.log(id_token)
-        }
-
-        function signOut() {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-                console.log('User signed out.');
-            });
-        }
-    </script>
-
-</body>
+<script src="runtime.9c7020c1c92c4dfa5bd2.js" defer></script><script src="polyfills.00096ed7d93ed26ee6df.js" defer></script><script src="main.ebfa7c56cde296b85f21.js" defer></script></body>
 </html>
